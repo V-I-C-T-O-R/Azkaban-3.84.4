@@ -5,6 +5,7 @@
 ### 修改
 - 官方Azkaban执行任务显示中文字符乱码
 - 定时任务前端模板默认为UTC时间
+- 增加Executor自动激活脚本
 
 ## Build
 Azkaban builds use Gradle and requires Java 8 or higher.
