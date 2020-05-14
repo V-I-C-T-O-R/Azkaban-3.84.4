@@ -65,7 +65,6 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class ExecutorServlet extends LoginAbstractAzkabanServlet {
 
   private static final Logger logger = LoggerFactory.getLogger(ExecutorServlet.class.getName());
@@ -955,6 +954,14 @@ public class ExecutorServlet extends LoginAbstractAzkabanServlet {
       options.setSuccessEmails(flow.getSuccessEmails());
     }
     options.setMailCreator(flow.getMailCreator());
+
+    //修改增加传入参数的方式,可以从.properties文件传入
+    Map<String, String> projectProperties = this.projectManager.getProjectProperties(project.getId(), project.getVersion());
+    Map<String, String> newFlowProperties = options.getFlowParameters();
+    //当且仅当flowparameter中不包含useExecutor而projectProperties存在且包含useExecutor时，更新
+    if(!newFlowProperties.keySet().contains(ExecutionOptions.USE_EXECUTOR) && projectProperties != null && projectProperties.size() != 0 && projectProperties.keySet().contains(ExecutionOptions.USE_EXECUTOR)){
+      newFlowProperties.put(ExecutionOptions.USE_EXECUTOR,projectProperties.get(ExecutionOptions.USE_EXECUTOR));
+    }
 
     try {
       HttpRequestUtils.filterAdminOnlyFlowParams(this.userManager, options, user);

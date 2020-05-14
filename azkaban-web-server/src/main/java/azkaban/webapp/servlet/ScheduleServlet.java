@@ -538,6 +538,14 @@ public class ScheduleServlet extends LoginAbstractAzkabanServlet {
     ExecutionOptions flowOptions = null;
     try {
       flowOptions = HttpRequestUtils.parseFlowOptions(req);
+
+      //修改增加传入参数的方式,可以从.properties文件传入
+      Map<String, String> projectProperties = this.projectManager.getProjectProperties(project.getId(), project.getVersion());
+      Map<String, String> newFlowProperties = flowOptions.getFlowParameters();
+      //当且仅当flowparameter中不包含useExecutor而projectProperties存在且包含useExecutor时，更新
+      if(!newFlowProperties.keySet().contains(ExecutionOptions.USE_EXECUTOR) && projectProperties != null && projectProperties.size() != 0 && projectProperties.keySet().contains(ExecutionOptions.USE_EXECUTOR)){
+        newFlowProperties.put(ExecutionOptions.USE_EXECUTOR,projectProperties.get(ExecutionOptions.USE_EXECUTOR));
+      }
       HttpRequestUtils.filterAdminOnlyFlowParams(this.userManager, flowOptions, user);
     } catch (final Exception e) {
       ret.put(PARAM_ERROR, e.getMessage());
@@ -658,6 +666,14 @@ public class ScheduleServlet extends LoginAbstractAzkabanServlet {
     ExecutionOptions flowOptions = null;
     try {
       flowOptions = HttpRequestUtils.parseFlowOptions(req);
+
+      //修改增加传入参数的方式,可以从.properties文件传入
+      Map<String, String> projectProperties = this.projectManager.getProjectProperties(project.getId(), project.getVersion());
+      Map<String, String> newFlowProperties = flowOptions.getFlowParameters();
+      //当且仅当flowparameter中不包含useExecutor而projectProperties存在且包含useExecutor时，更新
+      if(!newFlowProperties.keySet().contains(ExecutionOptions.USE_EXECUTOR) && projectProperties != null && projectProperties.size() != 0 && projectProperties.keySet().contains(ExecutionOptions.USE_EXECUTOR)){
+        newFlowProperties.put(ExecutionOptions.USE_EXECUTOR,projectProperties.get(ExecutionOptions.USE_EXECUTOR));
+      }
       HttpRequestUtils.filterAdminOnlyFlowParams(this.userManager, flowOptions, user);
     } catch (final Exception e) {
       ret.put(PARAM_ERROR, e.getMessage());

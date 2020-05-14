@@ -16,8 +16,6 @@
 
 package azkaban.project;
 
-import static java.util.Objects.requireNonNull;
-
 import azkaban.Constants;
 import azkaban.executor.ExecutorManagerException;
 import azkaban.flow.Flow;
@@ -31,20 +29,19 @@ import azkaban.utils.CaseInsensitiveConcurrentHashMap;
 import azkaban.utils.Props;
 import azkaban.utils.PropsUtils;
 import com.google.common.io.Files;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import static java.util.Objects.requireNonNull;
 
 
 @Singleton
@@ -371,6 +368,18 @@ public class ProjectManager {
     } else {
       return this.projectLoader.fetchProjectProperty(project, source);
     }
+  }
+
+  public Map<String, String> getProjectProperties(final int projectId, final int version) throws ProjectManagerException {
+    Map<String, Props> propsMap = this.projectLoader.fetchProjectProperties(projectId,version);
+    if (propsMap == null)
+      return null;
+    //合并指定项目的所有properties
+    Map<String, String> properties = new HashMap<>();
+    for (Props props : propsMap.values()){
+      properties.putAll(props.get_current());
+    }
+    return properties;
   }
 
   public Props getJobOverrideProperty(final Project project, final Flow flow, final String jobName,

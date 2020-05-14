@@ -913,4 +913,8 @@ public class Props {
     this.source = source;
     return this;
   }
+
+  public Map<String, String> get_current(){
+    return this._current;
+  }
 }
