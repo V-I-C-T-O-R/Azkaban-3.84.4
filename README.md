@@ -4,7 +4,7 @@
 
 ### 修改
 - 官方Azkaban执行任务显示中文字符乱码
-- 定时任务前端模板默认为UTC时间
+- 定时任务前端模板默认为Asia/Shanghai时间
 - 增加Executor自动激活脚本
 - 增加启动脚本固定executor id
 - 增加可在.properties文件中指定executor id
@@ -59,23 +59,3 @@ For help, please visit the [Azkaban Google Group](https://groups.google.com/foru
 ## Developer Guide
 
 See [the contribution guide](https://github.com/azkaban/azkaban/blob/master/CONTRIBUTING.md).
-
-#### Documentation development
-
-If you want to contribute to the documentation or the release tool (inside the `tools` folder), 
-please make sure python3 is installed in your environment. python virtual environment is recommended to run these scripts.
-
-To download the python3 dependencies, run 
-
-```bash
-pip3 install -r requirements.txt
-```
-After, enter the documentation folder `docs` and make the build by running
-```bash
-cd docs
-make html
-```
-
-
-**[July, 2018]** We are actively improving our documentation. Everyone in the AZ community is 
-welcome to submit a pull request to edit/fix the documentation.
